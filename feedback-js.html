@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Complaint or Feedback</title>
+    <!-- Bootstrap CSS -->
+    <link href="../bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('../image/new-image.png'); /* Replace with your actual image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">eBill Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-warning text-dark" href="../E-bill Help/help.html">Help</a>
+                    </li>
+                    <li class="nav-item align-items-end">
+                        <a class="nav-link btn btn-danger text-white" href="../E-bill Login-Page/login.html">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="back-button">
+            <a href="javascript:history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+        </div>
+        <h1 class="text-center mb-4">User Complaint or Feedback</h1>
+        <form id="feedbackForm">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">Personal Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile">Mobile</label>
+                                <input type="tel" class="form-control" id="mobile" name="mobile" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0">Feedback Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="feedback_type">Type of Feedback</label>
+                                <select class="form-control" id="feedback_type" name="feedback_type" required>
+                                    <option value="complaint">Complaint</option>
+                                    <option value="suggestion">Suggestion</option>
+                                    <option value="inquiry">Inquiry</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Your Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-3 mb-6">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const feedback_type = document.getElementById('feedback_type').value;
+            const message = document.getElementById('message').value;
+
+            const complaint = {
+                name,
+                email,
+                mobile,
+                feedback_type,
+                message,
+                date: new Date().toLocaleString(),
+                status: 'Pending'
+            };
+
+            let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            complaints.push(complaint);
+            localStorage.setItem('complaints', JSON.stringify(complaints));
+
+            alert('Your complaint/feedback has been submitted successfully.');
+            document.getElementById('feedbackForm').reset();
+        });
+    </script>
+</body>
+</html>

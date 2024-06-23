@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Payment</title>
+    <!-- Bootstrap CSS -->
+    <link href="../bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('../image/new-image.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-link.btn {
+            margin-left: 0.5rem;
+        }
+
+        .content-container {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .card-body {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .nav-item a {
+            color: #007bff;
+        }
+
+        .nav-item a:hover {
+            color: #0056b3;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                margin-top: 10px;
+                padding: 10px;
+            }
+        }
+
+        .back-button {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">eBill Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-warning text-dark" href="../E-bill Help/help.html">Help</a>
+                    </li>
+                    <li class="nav-item align-items-end">
+                        <a class="nav-link btn btn-danger text-white" href="../E-bill Login-Page/login.html">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container content-container">
+        <div class="back-button">
+            <a href="javascript:history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+        </div>
+        <div class="payment-header">
+            <h2>Bill Payment</h2>
+            <p>Select your preferred payment method</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Credit/Debit Card</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" placeholder="Enter your card number">
+                            </div>
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" class="form-control" id="cvv" placeholder="CVV">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Pay Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Net Banking</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="bankName">Bank Name</label>
+                                <select class="form-control" id="bankName">
+                                    <option>Select your bank</option>
+                                    <option>Bank A</option>
+                                    <option>Bank B</option>
+                                    <option>Bank C</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Pay Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">UPI</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="upiId">UPI ID</label>
+                                <input type="text" class="form-control" id="upiId" placeholder="Enter your UPI ID">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Pay Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Wallet</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="walletName">Wallet</label>
+                                <select class="form-control" id="walletName">
+                                    <option>Select your wallet</option>
+                                    <option>Wallet A</option>
+                                    <option>Wallet B</option>
+                                    <option>Wallet C</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Pay Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

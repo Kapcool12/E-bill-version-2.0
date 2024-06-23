@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBill Signup</title>
+    <!-- Bootstrap CSS -->
+    <link href="../bootstrap.min.css" rel="stylesheet">
+    <script type="module" src="./firebas.js"></script>
+    <style>
+        body {
+            background-image: url('../image/new-image.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-link.btn {
+            margin-left: 0.5rem;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #343a40;
+        }
+
+        .card-header h4 {
+            margin-bottom: 0;
+        }
+
+        .valid-feedback, .invalid-feedback {
+            display: none;
+        }
+
+        .is-valid ~ .valid-feedback {
+            display: block;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">eBill</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="../E-bill Help/help.html">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="back-button">
+            <a href="javascript:history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+        </div>
+        <h1 class="text-center mb-4">Signup for eBill</h1>
+        <form id="signupForm" method="POST" novalidate>
+            <div id="signUpMessage" class="messageDiv" style="display:none"></div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">Personal Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" class="form-control" id="first-name" name="first-name" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Please enter your first name.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" class="form-control" id="last-name" name="last-name" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Please enter your last name.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile">Mobile</label>
+                                <input type="tel" class="form-control" id="mobile" name="mobile" pattern="\d{10}" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0">Account Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                                <div class="valid-feedback"></div>
+                                <div class="invalid-feedback">Please enter a username.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="aadhaar">Aadhaar No.</label>
+                                <input type="text" class="form-control" id="aadhaar" name="aadhaar" pattern="\d{12}" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Please enter a valid 12-digit Aadhaar number.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Please enter a password.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm-password" name="confirm-password" required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">Passwords do not match.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitSignUp">Sign Up</button>
+            </div>
+        </form>
+        <div class="text-center mt-3 mb-4" style="color: white;">
+            Already have an account? <a href="../E-bill Login-Page/login-js.html" style="color: white;">Log In</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            if (!form.checkValidity()) {
+                event.stopPropagation();
+                form.classList.add('was-validated');
+                return;
+            }
+
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const mobile = document.getElementById('mobile').value;
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const aadhaar = document.getElementById('aadhaar').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirm-password').classList.add('is-invalid');
+                return;
+            } else {
+                document.getElementById('confirm-password').classList.remove('is-invalid');
+                document.getElementById('confirm-password').classList.add('is-valid');
+            }
+
+            const user = {
+                firstName,
+                lastName,
+                mobile,
+                email,
+                username,
+                aadhaar,
+                password
+            };
+
+            // Store data in localStorage and sessionStorage
+            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('name', `${firstName} ${lastName}`);
+            sessionStorage.setItem('email', email);
+
+            document.getElementById('signUpMessage').innerHTML = '<div class="alert alert-success">Signup successful!</div>';
+            document.getElementById('signUpMessage').style.display = 'block';
+            form.reset();
+            form.classList.remove('was-validated');
+        });
+    </script>
+</body>
+</html>

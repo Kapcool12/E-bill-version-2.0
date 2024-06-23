@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status</title>
+    <!-- Bootstrap CSS -->
+    <link href="../bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('../image/new-image.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content-container {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .status-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .apply-again {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                margin-top: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">eBill Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-warning text-dark" href="../E-bill Help/help.html">Help</a>
+                    </li>
+                    <li class="nav-item align-items-end">
+                        <a class="nav-link btn btn-danger text-white" href="../E-bill Login-Page/login.html">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container content-container">
+        <div class="status-header">
+            <h2>Application Status</h2>
+            <p>Check the status of your application below</p>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped" id="status-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody id="status-body">
+                    <!-- Status data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="apply-again">
+            <a href="../E-bill Application/apply.html" class="btn btn-primary">Apply Again</a>
+        </div>
+    </div>
+
+    <!-- JavaScript for Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const applications = JSON.parse(localStorage.getItem('applications')) || [];
+            const loggedInName = sessionStorage.getItem('name');
+            const loggedInEmail = sessionStorage.getItem('email');
+            const statusBody = document.getElementById('status-body');
+
+            function renderStatus() {
+                statusBody.innerHTML = '';
+                applications.forEach((application, index) => {
+                    if (application.email === loggedInEmail) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${application.name}</td>
+                            <td>${application.email}</td>
+                            <td>${application.status}</td>
+                            <td>${application.reason || ''}</td>
+                        `;
+                        statusBody.appendChild(row);
+                    }
+                });
+            }
+
+            renderStatus();
+        });
+    </script>
+</body>
+</html>
