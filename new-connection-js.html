@@ -5,161 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eBill Signup</title>
     <!-- Bootstrap CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url('new-image.png'); /* Replace with your actual image path */
+            background-image: url('../image/new-image.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
             margin: 0;
             padding: 0;
         }
+
         .navbar .nav-link.btn {
             margin-left: 0.5rem;
         }
-        .card-header {
-            color: #fff;
+
+        .form-section {
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(196, 30, 30, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-section h4 {
+            color: #343a40;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            width: calc(33.33% - 10px); /* Adjust width for three columns */
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .valid-feedback, .invalid-feedback {
+            display: none;
+        }
+
+        .is-valid ~ .valid-feedback {
+            display: block;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+
+        #spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            display: none;
+            z-index: 9999;
+        }
+
+        footer {
+            background-color: transparent;
+            padding: 0;
+            text-align: center;
+            position: relative;
+            margin-top: auto;
+        }
+
+        footer img {
+            width: 100%;
+            height: auto;
+            opacity: 0.1;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
         }
     </style>
 </head>
-<body class="bg-light">
-    <!-- Navigation Bar -->
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">eBill Bill Payment</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">eBill</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link btn btn-warning text-dark" href="help.html">Help</a>
+                        <a class="nav-link btn" href="../E-bill Help/help.html">Help</a>
                     </li>
                     <li class="nav-item align-items-end">
-                        <a class="nav-link btn btn-danger text-white" href="index.html">Log Out</a>
+                        <a class="nav-link btn btn-danger text-white" href="../E-bill Login-Page/login.html">Log Out</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <!-- Signup Form -->
-    <div class="container mt-5">
+
+    <div class="container mt-0">
         <div class="back-button">
-            <a href="javascript:history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+            <a href="javascript:history.back()">
+                <i class="bi bi-arrow-left"></i>
+            </a>
         </div>
-        <h1 class="text-center mb-4">Application for New Electricity Connection</h1>
-        <div class="card">
-            <div class="card-header bg-primary">
-                <h4 class="mb-0">New Application Form</h4>
+        <form id="signupForm" method="POST" novalidate>
+            <div id="signUpMessage" class="messageDiv" style="display:none"></div>
+            <div class="form-section">
+                <h4>Create A New Account</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile</label>
+                        <input type="tel" class="form-control" id="mobile" name="mobile" pattern="\d{10}" placeholder="Enter your mobile number" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="connection_type">Connection Type</label>
+                        <select class="form-control" id="connection_type" name="connection_type" required>
+                            <option value="residential">Residential</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a connection type.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="load_type">Load Type</label>
+                        <input type="text" class="form-control" id="load_type" name="load_type" placeholder="Enter load type" required>
+                        <div class="invalid-feedback">Please enter the load type.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="document">Upload Document</label>
+                        <input type="file" class="form-control" id="document" name="document" required>
+                        <div class="invalid-feedback">Please upload a document.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address_proof">Address Proof</label>
+                        <input type="file" class="form-control" id="address_proof" name="address_proof" required>
+                        <div class="invalid-feedback">Please upload address proof.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="identity_proof">Identity Proof</label>
+                        <input type="file" class="form-control" id="identity_proof" name="identity_proof" required>
+                        <div class="invalid-feedback">Please upload identity proof.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+                        <div class="invalid-feedback">Please enter your address.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" required>
+                        <div class="invalid-feedback">Please enter your city.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" class="form-control" id="country" name="country" placeholder="Enter your country" required>
+                        <div class="invalid-feedback">Please enter your country.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pin-code">Pin-code</label>
+                        <input type="text" class="form-control" id="pin-code" name="pin-code" pattern="\d{6}" placeholder="Enter your pin-code" required>
+                        <div class="invalid-feedback">Please enter your pin-code.</div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitSignUp">Apply</button>
+                </div>
             </div>
-            <div class="card-body">
-                <form id="signupForm" action="" method="POST">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!-- Personal Information -->
-                            <h5>Personal Information</h5>
-                            <div class="form-group mb-3">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" disabled>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" disabled>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="mobile">Mobile</label>
-                                <input type="tel" class="form-control" id="mobile" name="mobile" required>
-                                <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="gender">Gender</label>
-                                <select class="form-control" id="gender" name="gender">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="income">Income</label>
-                                <input type="text" class="form-control" id="income" name="income">
-                            </div>
-                            <!-- Connection Information -->
-                            <h5>Connection Information</h5>
-                            <div class="form-group mb-3">
-                                <label for="connection_type">Connection Type</label>
-                                <select class="form-control" id="connection_type" name="connection_type" required>
-                                    <option value="residential">Residential</option>
-                                    <option value="commercial">Commercial</option>
-                                </select>
-                                <div class="invalid-feedback">Please select a connection type.</div>
-                            </div>
-                            <!-- Document Section -->
-                            <h5>Documents</h5>
-                            <div class="form-group mb-3">
-                                <label for="document">Upload Document</label>
-                                <input type="file" class="form-control" id="document" name="document" required>
-                                <div class="invalid-feedback">Please upload a document.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <!-- Address Information -->
-                            <h5>Address Information</h5>
-                            <div class="form-group mb-3">
-                                <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" required>
-                                <div class="invalid-feedback">Please enter your address.</div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="city">City</label>
-                                <input type="text" class="form-control" id="city" name="city" required>
-                                <div class="invalid-feedback">Please enter your city.</div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="country">Country</label>
-                                <input type="text" class="form-control" id="country" name="country" required>
-                                <div class="invalid-feedback">Please enter your country.</div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="pin-code">Pin-code</label>
-                                <input type="text" class="form-control" id="pin-code" name="pin-code" required>
-                                <div class="invalid-feedback">Please enter your pin-code.</div>
-                            </div>
-                            <!-- Optional Information -->
-                            <h5>Optional Information</h5>
-                            <div class="form-group mb-3">
-                                <label for="previous_provider">Previous Provider (if any)</label>
-                                <input type="text" class="form-control" id="previous_provider" name="previous_provider">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="occupation">Occupation</label>
-                                <input type="text" class="form-control" id="occupation" name="occupation">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="education">Education</label>
-                                <input type="text" class="form-control" id="education" name="education">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="marital_status">Marital Status</label>
-                                <select class="form-control" id="marital_status" name="marital_status">
-                                    <option value="single">Single</option>
-                                    <option value="married">Married</option>
-                                    <option value="divorced">Divorced</option>
-                                    <option value="widowed">Widowed</option>
-                                </select>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="text-center mt-4 mb-4">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Apply</button>
-                    </div>
-                </form>
+        </form>
+
+        <!-- Spinner -->
+        <div class="text-center mt-4">
+            <div class="spinner-border text-primary" role="status" id="spinner">
+                <span class="sr-only"></span>
             </div>
         </div>
     </div>
+    <footer>
+        <img src="./image-new.png" alt="Footer Logo">
+    </footer>
 
-    <!-- JavaScript for Bootstrap -->
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -181,92 +237,106 @@
             const email = document.getElementById('email');
             const mobile = document.getElementById('mobile');
             const connectionType = document.getElementById('connection_type');
+            const loadType = document.getElementById('load_type');
+            const documentUpload = document.getElementById('document');
+            const addressProof = document.getElementById('address_proof');
+            const identityProof = document.getElementById('identity_proof');
             const address = document.getElementById('address');
             const city = document.getElementById('city');
             const country = document.getElementById('country');
             const pinCode = document.getElementById('pin-code');
-            const documentField = document.getElementById('document');
 
-            // Reset validation classes and messages
-            [mobile, connectionType, address, city, country, pinCode, documentField].forEach(field => {
-                field.classList.remove('is-invalid');
-            });
-
-            // Validate Mobile
-            if (!mobile.value || !/^\d{10}$/.test(mobile.value)) {
+            // Validate form fields
+            if (!mobile.value.match(/^\d{10}$/)) {
+                isValid = false;
                 mobile.classList.add('is-invalid');
-                isValid = false;
+            } else {
+                mobile.classList.remove('is-invalid');
+                mobile.classList.add('is-valid');
             }
 
-            // Validate Connection Type
-            if (!connectionType.value) {
+            if (connectionType.value === '') {
+                isValid = false;
                 connectionType.classList.add('is-invalid');
-                isValid = false;
+            } else {
+                connectionType.classList.remove('is-invalid');
+                connectionType.classList.add('is-valid');
             }
 
-            // Validate Address
-            if (!address.value) {
+            if (loadType.value.trim() === '') {
+                isValid = false;
+                loadType.classList.add('is-invalid');
+            } else {
+                loadType.classList.remove('is-invalid');
+                loadType.classList.add('is-valid');
+            }
+
+            if (documentUpload.files.length === 0) {
+                isValid = false;
+                documentUpload.classList.add('is-invalid');
+            } else {
+                documentUpload.classList.remove('is-invalid');
+                documentUpload.classList.add('is-valid');
+            }
+
+            if (addressProof.files.length === 0) {
+                isValid = false;
+                addressProof.classList.add('is-invalid');
+            } else {
+                addressProof.classList.remove('is-invalid');
+                addressProof.classList.add('is-valid');
+            }
+
+            if (identityProof.files.length === 0) {
+                isValid = false;
+                identityProof.classList.add('is-invalid');
+            } else {
+                identityProof.classList.remove('is-invalid');
+                identityProof.classList.add('is-valid');
+            }
+
+            if (address.value.trim() === '') {
+                isValid = false;
                 address.classList.add('is-invalid');
-                isValid = false;
+            } else {
+                address.classList.remove('is-invalid');
+                address.classList.add('is-valid');
             }
 
-            // Validate City
-            if (!city.value) {
+            if (city.value.trim() === '') {
+                isValid = false;
                 city.classList.add('is-invalid');
-                isValid = false;
+            } else {
+                city.classList.remove('is-invalid');
+                city.classList.add('is-valid');
             }
 
-            // Validate Country
-            if (!country.value) {
+            if (country.value.trim() === '') {
+                isValid = false;
                 country.classList.add('is-invalid');
-                isValid = false;
+            } else {
+                country.classList.remove('is-invalid');
+                country.classList.add('is-valid');
             }
 
-            // Validate Pin Code
-            if (!pinCode.value || !/^\d{6}$/.test(pinCode.value)) {
+            if (!pinCode.value.match(/^\d{6}$/)) {
+                isValid = false;
                 pinCode.classList.add('is-invalid');
-                isValid = false;
-            }
-
-            // Validate Document
-            if (!documentField.files.length) {
-                documentField.classList.add('is-invalid');
-                isValid = false;
+            } else {
+                pinCode.classList.remove('is-invalid');
+                pinCode.classList.add('is-valid');
             }
 
             if (isValid) {
-                const formData = {
-                    name: name.value,
-                    email: email.value,
-                    mobile: mobile.value,
-                    connectionType: connectionType.value,
-                    address: address.value,
-                    city: city.value,
-                    country: country.value,
-                    pinCode: pinCode.value,
-                    previousProvider: document.getElementById('previous_provider').value,
-                    income: document.getElementById('income').value,
-                    occupation: document.getElementById('occupation').value,
-                    education: document.getElementById('education').value,
-                    gender: document.getElementById('gender').value,
-                    maritalStatus: document.getElementById('marital_status').value,
-                    date: new Date().toLocaleDateString(),
-                    status: 'Pending'
-                };
+                document.getElementById('spinner').style.display = 'block';
 
-                // Store form data in localStorage under applications
-                const applications = JSON.parse(localStorage.getItem('applications')) || [];
-                applications.push(formData);
-                localStorage.setItem('applications', JSON.stringify(applications));
-
-                // Display success message or proceed with form submission
-                alert('Application submitted successfully!');
-                // Optionally, redirect to another page
-                // window.location.href = 'success.html';
+                setTimeout(function() {
+                    document.getElementById('spinner').style.display = 'none';
+                    document.getElementById('signUpMessage').style.display = 'block';
+                    document.getElementById('signUpMessage').innerText = 'Form submitted successfully!';
+                }, 2000);
             }
         });
     </script>
 </body>
 </html>
-
-
