@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eBill Signup</title>
     <!-- Bootstrap CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap.min.css" rel="stylesheet">
+    <script src="cities.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url('../image/new-image.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -23,6 +23,7 @@
 
         .form-section {
             padding: 20px;
+            /* White background with 80% opacity */
             border-radius: 50px;
             box-shadow: 0 0 10px rgba(196, 30, 30, 0.1);
             position: relative;
@@ -44,12 +45,12 @@
         .form-row {
             display: flex;
             justify-content: space-between;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
         }
 
         .form-row .form-group {
-            width: calc(33.33% - 10px); /* Adjust width for three columns */
-            margin-bottom: 0.5rem;
+            width: calc(50% - 10px); /* Adjust width for two columns */
+            margin-bottom: 0.5rem; /* Adjust spacing between rows */
         }
 
         .form-control {
@@ -68,12 +69,13 @@
             display: block;
         }
 
+        /* Spinner styles */
         #spinner {
             position: fixed;
             top: 50%;
             left: 50%;
-            display: none;
-            z-index: 9999;
+            display: none; /* Initially hidden */
+            z-index: 9999; /* Ensure it is above other elements */
         }
 
         footer {
@@ -94,6 +96,17 @@
             right: 0;
             z-index: 1;
         }
+
+        .mandatory-symbol::after {
+            content: '*';
+            color: red;
+            margin-left: 2px;
+        }
+
+        .disabled-symbol:hover {
+            cursor: not-allowed;
+        }
+        
     </style>
 </head>
 <body>
@@ -124,80 +137,125 @@
         </div>
         <form id="signupForm" method="POST" novalidate>
             <div id="signUpMessage" class="messageDiv" style="display:none"></div>
+            
             <div class="form-section">
-                <h4>Create A New Account</h4>
+                <h4>Apply for new Connection</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Name <span class="disabled-symbol"></span></label>
                         <input type="text" class="form-control" id="name" name="name" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email <span class="disabled-symbol"></span></label>
                         <input type="email" class="form-control" id="email" name="email" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="mobile">Mobile</label>
-                        <input type="tel" class="form-control" id="mobile" name="mobile" pattern="\d{10}" placeholder="Enter your mobile number" required>
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
+                        <label for="mobile">Mobile <span class="disabled-symbol"></span></label>
+                        <input type="tel" class="form-control" id="mobile" name="mobile" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="gender">Gender</label>
+                        <label for="gender">Gender <span class="mandatory-symbol"></span></label>
                         <select class="form-control" id="gender" name="gender">
+                            <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="other">Other</option>
                         </select>
+                        <div class="invalid-feedback">Please select Gender.</div>
+                        <div class="valid-feedback"></div>
                     </div>
                     <div class="form-group">
-                        <label for="connection_type">Connection Type</label>
-                        <select class="form-control" id="connection_type" name="connection_type" required>
+                        <label for="connection_type">Connection Type <span class="mandatory-symbol"></span></label>
+                        <select class="form-control" id="connection_type" name="connection_type">
+                            <option value="">Select Connection Type</option>
                             <option value="residential">Residential</option>
                             <option value="commercial">Commercial</option>
                         </select>
                         <div class="invalid-feedback">Please select a connection type.</div>
                     </div>
                     <div class="form-group">
-                        <label for="load_type">Load Type</label>
-                        <input type="text" class="form-control" id="load_type" name="load_type" placeholder="Enter load type" required>
-                        <div class="invalid-feedback">Please enter the load type.</div>
+                        <label for="sts">State <span class="mandatory-symbol"></span></label>
+                        <select onchange="print_city('city', this.selectedIndex);" id="sts" name="sts" class="form-control"></select>
+                        <div class="invalid-feedback">Please select your state.</div>
                     </div>
                     <div class="form-group">
-                        <label for="document">Upload Document</label>
-                        <input type="file" class="form-control" id="document" name="document" required>
-                        <div class="invalid-feedback">Please upload a document.</div>
+                        <label for="city">City <span class="mandatory-symbol"></span></label>
+                        <select id="city" name="city" class="form-control"></select>
+                        <div class="invalid-feedback">Please select your city.</div>
                     </div>
                     <div class="form-group">
-                        <label for="address_proof">Address Proof</label>
-                        <input type="file" class="form-control" id="address_proof" name="address_proof" required>
-                        <div class="invalid-feedback">Please upload address proof.</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="identity_proof">Identity Proof</label>
-                        <input type="file" class="form-control" id="identity_proof" name="identity_proof" required>
-                        <div class="invalid-feedback">Please upload identity proof.</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+                        <label for="address1">Address Line 1 <span class="mandatory-symbol"></span></label>
+                        <input type="text" class="form-control" id="address1" name="address1" placeholder="Enter your address">
                         <div class="invalid-feedback">Please enter your address.</div>
                     </div>
                     <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" required>
-                        <div class="invalid-feedback">Please enter your city.</div>
+                        <label for="address2">Address Line 2</label>
+                        <input type="text" class="form-control" id="address2" name="address2" placeholder="Enter your address">
                     </div>
                     <div class="form-group">
-                        <label for="country">Country</label>
-                        <input type="text" class="form-control" id="country" name="country" placeholder="Enter your country" required>
-                        <div class="invalid-feedback">Please enter your country.</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="pin-code">Pin-code</label>
-                        <input type="text" class="form-control" id="pin-code" name="pin-code" pattern="\d{6}" placeholder="Enter your pin-code" required>
-                        <div class="invalid-feedback">Please enter your pin-code.</div>
+                        <label for="pin-code">Pin-code <span class="mandatory-symbol"></span></label>
+                        <input type="text" class="form-control" id="pin-code" name="pin-code" pattern="\d{6}" placeholder="Enter your pin-code">
+                        <div class="invalid-feedback">Please enter a valid 6-digit pin-code.</div>
                     </div>
                 </div>
+
+                <!-- Residential Fields -->
+                <div id="residentialFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="identity_proof">Identity Proof (Aadhar Card) <span class="mandatory-symbol"></span></label>
+                            <input type="file" class="form-control-file" id="identity_proof" name="identity_proof">
+                            <div class="invalid-feedback">Please upload Identity proof.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address_proof_residential">Address Proof <span class="mandatory-symbol"></span></label>
+                            <input type="file" class="form-control-file" id="address_proof_residential" name="address_proof_residential">
+                            <div class="invalid-feedback">Please upload Address proof.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commercial Fields -->
+                <div id="commercialFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="company_name">Company Name <span class="mandatory-symbol"></span></label>
+                            <input type="text" class="form-control" id="company_name" name="company_name">
+                            <div class="invalid-feedback">Please enter Company name.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gst_number">GST Number <span class="mandatory-symbol"></span></label>
+                            <input type="text" class="form-control" id="gst_number" name="gst_number">
+                            <div class="invalid-feedback">Please enter GST Number.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pan_card">PAN Card</label>
+                            <input type="text" class="form-control" id="pan_card" name="pan_card">
+                            <div class="invalid-feedback">Please enter PAN card number.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="voltage_required">Voltage Required</label>
+                            <select class="form-control" id="voltage_required" name="voltage_required">
+                                <option value="">Select Voltage type</option>
+                                <option value="11V">11V</option>
+                                <option value="33V">33V</option>
+                                <option value="66V">66V</option>
+                            </select>
+                            <div class="invalid-feedback">Please select Voltage type.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address_proof_commercial">Address Proof <span class="mandatory-symbol"></span></label>
+                            <input type="file" class="form-control-file" id="address_proof_commercial" name="address_proof_commercial">
+                            <div class="invalid-feedback">Please upload Address proof.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gst_proof_commercial">GST Document <span class="mandatory-symbol"></span></label>
+                            <input type="file" class="form-control-file" id="gst_proof_commercial" name="gst_proof_commercial">
+                            <div class="invalid-feedback">Please upload GST proof.</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitSignUp">Apply</button>
                 </div>
@@ -207,28 +265,39 @@
         <!-- Spinner -->
         <div class="text-center mt-4">
             <div class="spinner-border text-primary" role="status" id="spinner">
-                <span class="sr-only"></span>
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
     </div>
-    <footer>
-        <img src="./image-new.png" alt="Footer Logo">
-    </footer>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Autofill Name and Email from localStorage
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData) {
-                document.getElementById('name').value = userData.firstName;
-                document.getElementById('email').value = userData.email;
+        // Populate initial states
+        print_state("sts");
+
+        // Show/hide fields based on connection type
+        document.getElementById('connection_type').addEventListener('change', function() {
+            const connectionType = this.value;
+            const residentialFields = document.getElementById('residentialFields');
+            const commercialFields = document.getElementById('commercialFields');
+
+            // Reset fields
+            residentialFields.style.display = 'none';
+            commercialFields.style.display = 'none';
+
+            // Show relevant fields based on connection type
+            if (connectionType === 'residential') {
+                residentialFields.style.display = 'block';
+            } else if (connectionType === 'commercial') {
+                commercialFields.style.display = 'block';
             }
         });
 
+        // Form submission logic
         document.getElementById('signupForm').addEventListener('submit', function(event) {
             event.preventDefault();
             let isValid = true;
@@ -236,25 +305,25 @@
             const name = document.getElementById('name');
             const email = document.getElementById('email');
             const mobile = document.getElementById('mobile');
+            const gender = document.getElementById('gender');
             const connectionType = document.getElementById('connection_type');
-            const loadType = document.getElementById('load_type');
-            const documentUpload = document.getElementById('document');
-            const addressProof = document.getElementById('address_proof');
-            const identityProof = document.getElementById('identity_proof');
-            const address = document.getElementById('address');
+            const address1 = document.getElementById('address1');
+            const state = document.getElementById('sts');
             const city = document.getElementById('city');
-            const country = document.getElementById('country');
             const pinCode = document.getElementById('pin-code');
+            const residentialFields = document.getElementById("residentialFields");
+            const commercialFields = document.getElementById("commercialFields");
+            const company_name=document.getElementById("company_name");
+            const gst_number=document.getElementById("gst_number");
+            const pan_card= document.getElementById("pan_card");
+            const voltage_required=document.getElementById("voltage_required");
+
+
+
+            
+
 
             // Validate form fields
-            if (!mobile.value.match(/^\d{10}$/)) {
-                isValid = false;
-                mobile.classList.add('is-invalid');
-            } else {
-                mobile.classList.remove('is-invalid');
-                mobile.classList.add('is-valid');
-            }
-
             if (connectionType.value === '') {
                 isValid = false;
                 connectionType.classList.add('is-invalid');
@@ -263,47 +332,33 @@
                 connectionType.classList.add('is-valid');
             }
 
-            if (loadType.value.trim() === '') {
+            if (gender.value === '') {
                 isValid = false;
-                loadType.classList.add('is-invalid');
+                gender.classList.add('is-invalid');
             } else {
-                loadType.classList.remove('is-invalid');
-                loadType.classList.add('is-valid');
+                gender.classList.remove('is-invalid');
+                gender.classList.add('is-valid');
             }
 
-            if (documentUpload.files.length === 0) {
+            if (address1.value.trim() === '') {
                 isValid = false;
-                documentUpload.classList.add('is-invalid');
+                address1.classList.add('is-invalid');
             } else {
-                documentUpload.classList.remove('is-invalid');
-                documentUpload.classList.add('is-valid');
+                address1.classList.remove('is-invalid');
+                address1.classList.add('is-valid');
             }
 
-            if (addressProof.files.length === 0) {
+            if (state.value === '') {
                 isValid = false;
-                addressProof.classList.add('is-invalid');
+                state.classList.add('is-invalid');
             } else {
-                addressProof.classList.remove('is-invalid');
-                addressProof.classList.add('is-valid');
+                state.classList.remove('is-invalid');
+                state.classList.add('is-valid');
             }
 
-            if (identityProof.files.length === 0) {
-                isValid = false;
-                identityProof.classList.add('is-invalid');
-            } else {
-                identityProof.classList.remove('is-invalid');
-                identityProof.classList.add('is-valid');
-            }
+            
 
-            if (address.value.trim() === '') {
-                isValid = false;
-                address.classList.add('is-invalid');
-            } else {
-                address.classList.remove('is-invalid');
-                address.classList.add('is-valid');
-            }
-
-            if (city.value.trim() === '') {
+            if (city.value === '') {
                 isValid = false;
                 city.classList.add('is-invalid');
             } else {
@@ -311,15 +366,23 @@
                 city.classList.add('is-valid');
             }
 
-            if (country.value.trim() === '') {
+            if (company_name.value === '') {
                 isValid = false;
-                country.classList.add('is-invalid');
+                company_name.classList.add('is-invalid');
             } else {
-                country.classList.remove('is-invalid');
-                country.classList.add('is-valid');
+                company_name.classList.remove('is-invalid');
+                company_name.classList.add('is-valid');
             }
 
-            if (!pinCode.value.match(/^\d{6}$/)) {
+            if (gst_number.value === '') {
+                isValid = false;
+                gst_number.classList.add('is-invalid');
+            } else {
+                gst_number.classList.remove('is-invalid');
+                gst_number.classList.add('is-valid');
+            }
+
+            if (pinCode.value === '' || !pinCode.value.match(/^\d{6}$/)) {
                 isValid = false;
                 pinCode.classList.add('is-invalid');
             } else {
@@ -327,10 +390,74 @@
                 pinCode.classList.add('is-valid');
             }
 
+            if (voltage_required.value === '') {
+                isValid = false;
+                voltage_required.classList.add('is-invalid');
+            } else {
+                voltage_required.classList.remove('is-invalid');
+                voltage_required.classList.add('is-valid');
+            }
+
+            if (pan_card.value === '') {
+                isValid = false;
+                pan_card.classList.add('is-invalid');
+            } else {
+                pan_card.classList.remove('is-invalid');
+                pan_card.classList.add('is-valid');
+            }
+
+            // File validation
+        if (connectionType.value === 'residential') {
+            const identityProof = document.getElementById('identity_proof');
+            const addressProofResidential = document.getElementById('address_proof_residential');
+
+
+            if (identity_proof.files.length === 0) {
+                isValid = false;
+                identity_proof.classList.add('is-invalid');
+            } else {
+                identity_proof.classList.remove('is-invalid');
+                identity_proof.classList.add('is-valid');
+            }
+
+            if (addressProofResidential.files.length === 0) {
+                isValid = false;
+                addressProofResidential.classList.add('is-invalid');
+            } else {
+                addressProofResidential.classList.remove('is-invalid');
+                addressProofResidential.classList.add('is-valid');
+            }
+        }
+
+        if (connectionType.value === 'commercial') {
+            const identityProofcommercial = document.getElementById('address_proof_commercial');
+            const gst_proof_commercial = document.getElementById('gst_proof_commercial');
+            
+
+            if (identityProofcommercial.files.length === 0) {
+                isValid = false;
+                identityProofcommercial.classList.add('is-invalid');
+            } else {
+                identityProofcommercial.classList.remove('is-invalid');
+                identityProofcommercial.classList.add('is-valid');
+            }
+
+            if (gst_proof_commercial.files.length === 0) {
+                isValid = false;
+                gst_proof_commercial.classList.add('is-invalid');
+            } else {
+                gst_proof_commercial.classList.remove('is-invalid');
+                gst_proof_commercial.classList.add('is-valid');
+            }
+        }
+
             if (isValid) {
+                // Show spinner
                 document.getElementById('spinner').style.display = 'block';
 
+                // Simulate form submission (replace with actual submission logic)
                 setTimeout(function() {
+                    // Hide spinner
                     document.getElementById('spinner').style.display = 'none';
                     document.getElementById('signUpMessage').style.display = 'block';
                     document.getElementById('signUpMessage').innerText = 'Form submitted successfully!';
